@@ -9,7 +9,7 @@ export function Footer() {
             target='_blank'
             rel='noreferrer'
           >
-            Nelio Alves
+            Cláudio Cardoso
           </a>
         </p>
         <p className='text-light'>
