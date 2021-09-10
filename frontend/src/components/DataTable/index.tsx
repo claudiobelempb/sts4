@@ -1,4 +1,26 @@
+import axios from "axios";
+import { useEffect, useState } from "react"
+import { SalePage } from "types/salePage"
+import { formatLocalDate } from "utils/formatLocalDate";
+import { BASE_URL } from "utils/requests";
+
 export function DataTable() {
+
+  const [pages, setPages] = useState<SalePage>({
+    first: true,
+    last: true,
+    number: 0,
+    totalElements: 0,
+    totalPages: 0,
+  });
+
+  useEffect(() => {
+    axios.get(`${BASE_URL}/sales?page=0&size=10&sort=date,desc`)
+    .then((resp) => {
+      setPages(resp.data);
+    })
+  }, []);
+
   return (
     <div className='table-responsive'>
       <table className='table table-striped table-sm'>
@@ -12,62 +34,16 @@ export function DataTable() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>22/04/2021</td>
-            <td>Barry Allen</td>
-            <td>34</td>
-            <td>25</td>
-            <td>15017.00</td>
+          {pages.content?.map((page) => (
+            <tr key={page.seller.id}>
+              <td>{formatLocalDate(page.date, "dd/MM/yyyy")}</td>
+              <td>{page.seller.name}</td>
+              <td>{page.visited}</td>
+              <td>{page.deals}</td>
+              <td>{page.amount.toFixed(2)}</td>
           </tr>
-          <tr>
-            <td>22/04/2021</td>
-            <td>Barry Allen</td>
-            <td>34</td>
-            <td>25</td>
-            <td>15017.00</td>
-          </tr>
-          <tr>
-            <td>22/04/2021</td>
-            <td>Barry Allen</td>
-            <td>34</td>
-            <td>25</td>
-            <td>15017.00</td>
-          </tr>
-          <tr>
-            <td>22/04/2021</td>
-            <td>Barry Allen</td>
-            <td>34</td>
-            <td>25</td>
-            <td>15017.00</td>
-          </tr>
-          <tr>
-            <td>22/04/2021</td>
-            <td>Barry Allen</td>
-            <td>34</td>
-            <td>25</td>
-            <td>15017.00</td>
-          </tr>
-          <tr>
-            <td>22/04/2021</td>
-            <td>Barry Allen</td>
-            <td>34</td>
-            <td>25</td>
-            <td>15017.00</td>
-          </tr>
-          <tr>
-            <td>22/04/2021</td>
-            <td>Barry Allen</td>
-            <td>34</td>
-            <td>25</td>
-            <td>15017.00</td>
-          </tr>
-          <tr>
-            <td>22/04/2021</td>
-            <td>Barry Allen</td>
-            <td>34</td>
-            <td>25</td>
-            <td>15017.00</td>
-          </tr>
+          ))}
+          
         </tbody>
       </table>
     </div>
